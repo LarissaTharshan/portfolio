@@ -5,4 +5,24 @@
     --color-text-muted: #5b6470;
     --color-accent: #0b5cad;
     --color-border: #d9dde3;
+
+    /* Abstände */
+    --space-1: 0.25rem;
+    --space-2: 0.5rem;
+    --space-3: 1rem;
+    --space-4: 1.5rem;
+    --space-5: 2.5rem;
+    --space-6: 4rem;
+
+    /* Schrift */
+    --font-family-base: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-size-small: 0.875rem;
+    --font-size-base: 1rem;
+    --font-size-h2: clamp(1.5rem, 1.2rem + 1.5vw, 2.25rem);
+    --font-size-h1: clamp(2rem, 1.5rem + 2.5vw, 3.5rem);
+    --line-height-base: 1.6;
+    --line-height-heading: 1.2;
+
+    /* Layout */
+    --content-max-width: 65ch;
 }
