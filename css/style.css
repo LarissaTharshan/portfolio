@@ -209,3 +209,52 @@ section + section {
     font-size: var(--font-size-small);
     line-height: var(--line-height-heading);
 }
+
+/* Werdegang */
+.timeline {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.timeline-item {
+    padding-block: var(--space-4);
+    border-top: 1px solid var(--color-border);
+}
+
+.timeline-item:first-child {
+    padding-top: 0;
+    border-top: none;
+}
+
+.timeline-date {
+    margin-bottom: var(--space-1);
+    color: var(--color-text-muted);
+    font-size: var(--font-size-small);
+    font-weight: 700;
+}
+
+.timeline-content h3 {
+    margin-bottom: var(--space-1);
+}
+
+.timeline-place {
+    margin-bottom: var(--space-2);
+    color: var(--color-text-muted);
+}
+
+.timeline-content p:last-child {
+    margin-bottom: 0;
+}
+
+@media (min-width: 48rem) {
+    .timeline-item {
+        display: grid;
+        grid-template-columns: 10rem 1fr;
+        gap: var(--space-4);
+    }
+
+    .timeline-date {
+        margin-bottom: 0;
+    }
+}
