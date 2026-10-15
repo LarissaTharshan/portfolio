@@ -1,12 +1,11 @@
 :root {
-    /* Farben */
     --color-bg: #fdfcfa;
+    --color-surface: #f4f2ee;
     --color-text: #1f2328;
     --color-text-muted: #5b6470;
     --color-accent: #0b5cad;
     --color-border: #d9dde3;
 
-    /* Abstände */
     --space-1: 0.25rem;
     --space-2: 0.5rem;
     --space-3: 1rem;
@@ -14,20 +13,26 @@
     --space-5: 2.5rem;
     --space-6: 4rem;
 
-    /* Schrift */
     --font-family-base: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     --font-size-small: 0.875rem;
     --font-size-base: 1rem;
+    --font-size-h3: clamp(1.125rem, 1rem + 0.5vw, 1.375rem);
     --font-size-h2: clamp(1.5rem, 1.2rem + 1.5vw, 2.25rem);
     --font-size-h1: clamp(2rem, 1.5rem + 2.5vw, 3.5rem);
     --line-height-base: 1.6;
     --line-height-heading: 1.2;
 
     /* Layout */
+    --layout-max-width: 72rem;
     --content-max-width: 65ch;
+
+    /* Formen */
+    --radius-sm: 2px;
+    --radius: 0.5rem;
+    --radius-pill: 999px;
+    --focus-width: 3px;
 }
 
-/* Grundregeln */
 *,
 *::before,
 *::after {
@@ -44,8 +49,7 @@ body {
     background-color: var(--color-bg);
 }
 
-img,
-svg {
+img {
     display: block;
     max-width: 100%;
     height: auto;
@@ -53,7 +57,8 @@ svg {
 
 /* Typografie */
 h1,
-h2 {
+h2,
+h3 {
     margin-top: 0;
     margin-bottom: var(--space-3);
     line-height: var(--line-height-heading);
@@ -67,7 +72,12 @@ h2 {
     font-size: var(--font-size-h2);
 }
 
+h3 {
+    font-size: var(--font-size-h3);
+}
+
 p {
+    max-width: var(--content-max-width);
     margin-top: 0;
     margin-bottom: var(--space-3);
 }
@@ -76,7 +86,7 @@ p {
 header,
 main,
 footer {
-    max-width: var(--content-max-width);
+    max-width: var(--layout-max-width);
     margin-inline: auto;
     padding-inline: var(--space-3);
 }
@@ -104,7 +114,7 @@ a:hover {
 }
 
 a:focus-visible {
-    outline: 3px solid var(--color-accent);
+    outline: var(--focus-width) solid var(--color-accent);
     outline-offset: var(--space-1);
-    border-radius: 2px;
+    border-radius: var(--radius-sm);
 }
