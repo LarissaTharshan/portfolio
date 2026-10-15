@@ -166,3 +166,27 @@ section {
 section + section {
     border-top: 1px solid var(--color-border);
 }
+
+/* Projekte */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    gap: var(--space-4);
+}
+
+.card {
+    display: flex;
+    flex-direction: column;
+    padding: var(--space-4);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background-color: var(--color-surface);
+}
+
+.card h3 {
+    margin-bottom: var(--space-2);
+}
+
+.card .tag-list {
+    margin-top: auto;
+}
