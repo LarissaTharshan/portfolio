@@ -1,4 +1,5 @@
 :root {
+    /* Farben */
     --color-bg: #fdfcfa;
     --color-surface: #f4f2ee;
     --color-text: #1f2328;
@@ -6,6 +7,7 @@
     --color-accent: #0b5cad;
     --color-border: #d9dde3;
 
+    /* Abstände */
     --space-1: 0.25rem;
     --space-2: 0.5rem;
     --space-3: 1rem;
@@ -13,6 +15,7 @@
     --space-5: 2.5rem;
     --space-6: 4rem;
 
+    /* Schrift */
     --font-family-base: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     --font-size-small: 0.875rem;
     --font-size-base: 1rem;
@@ -33,6 +36,7 @@
     --focus-width: 3px;
 }
 
+/* Grundregeln */
 *,
 *::before,
 *::after {
@@ -117,4 +121,29 @@ a:focus-visible {
     outline: var(--focus-width) solid var(--color-accent);
     outline-offset: var(--space-1);
     border-radius: var(--radius-sm);
+}
+
+/* Header und Navigation */
+header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-2) var(--space-4);
+    padding-block: var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.site-name {
+    margin: 0;
+    font-weight: 700;
+}
+
+.site-name a {
+    color: var(--color-text);
+    text-decoration: none;
+}
+
+.site-name a:hover {
+    text-decoration: underline;
 }
