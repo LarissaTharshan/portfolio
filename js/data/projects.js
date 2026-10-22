@@ -33,5 +33,26 @@ export const projects = [
         description: 'iOS-App zur Übersicht über Einnahmen und Ausgaben.',
         tags: ['Swift', 'iOS'],
         year: 2026
+    },
+    {
+        id: 'gender-gap-tech',
+        title: 'Gender Gap in Tech',
+        description: 'Teamprojekt: Datenvisualisierung zum Frauenanteil in der IT-Branche.',
+        tags: ['Datenvisualisierung'],
+        year: 2026
+    },
+    {
+        id: 'hikelog',
+        title: 'HikeLog',
+        description: 'Teamprojekt: Android-App zum Erfassen von Wanderungen.',
+        tags: ['Kotlin', 'Android'],
+        year: 2026
+    },
+    {
+        id: 'nutritrack',
+        title: 'NutriTrack AI & Motion',
+        description: 'Android-App rund um Ernährung und Bewegung.',
+        tags: ['Kotlin', 'Android'],
+        year: 2026
     }
 ];
