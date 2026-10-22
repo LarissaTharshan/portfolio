@@ -62,3 +62,15 @@ export function renderProjects(container, projects) {
 
     container.replaceChildren(fragment);
 }
+
+/**
+ * Sortiert Projekte nach Jahr, das neueste zuerst.
+ * Reine Funktion: Das übergebene Array wird nicht verändert,
+ * und es wird kein DOM verwendet.
+ *
+ * @param {Project[]} projects - Die zu sortierenden Projekte.
+ * @returns {Project[]} Ein neues, sortiertes Array.
+ */
+export function sortProjectsByYear(projects) {
+    return [...projects].sort((a, b) => b.year - a.year);
+}
