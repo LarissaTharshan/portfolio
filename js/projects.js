@@ -4,7 +4,6 @@
 
 /**
  * Erstellt die Karte für ein einzelnes Projekt.
- * Alle Texte werden über textContent gesetzt, nie über innerHTML.
  *
  * @param {Project} project - Das Projekt, das dargestellt wird.
  * @returns {HTMLElement} Ein article-Element mit der Klasse "card".
@@ -45,4 +44,21 @@ export function createProjectCard(project) {
     card.append(tagList);
 
     return card;
+}
+
+/**
+ * Ersetzt den Inhalt meines Containers durch Karten für alle Projekte.
+ *
+ * @param {HTMLElement} container - Das Element, in das die Karten kommen.
+ * @param {Project[]} projects - Die Projekte in der gewünschten Reihenfolge.
+ * @returns {void}
+ */
+export function renderProjects(container, projects) {
+    const fragment = document.createDocumentFragment();
+
+    for (const project of projects) {
+        fragment.append(createProjectCard(project));
+    }
+
+    container.replaceChildren(fragment);
 }
