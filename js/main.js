@@ -1,3 +1,8 @@
-const APP_NAME = 'Portfolio';
+import {projects} from './data/projects.js';
+import {renderProjects, sortProjectsByYear} from './projects.js';
 
-console.log(`${APP_NAME}: main.js geladen`);
+const projectContainer = document.getElementById('project-list');
+
+if (projectContainer) {
+    renderProjects(projectContainer, sortProjectsByYear(projects));
+}
