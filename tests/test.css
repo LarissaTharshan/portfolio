@@ -1,0 +1,31 @@
+:root {
+    /* Farben nur für die Testseite */
+    --color-pass: #1a7f37;
+    --color-fail: #b42318;
+}
+
+main {
+    padding-block: var(--space-5);
+}
+
+.summary {
+    font-weight: 700;
+}
+
+.summary.pass,
+.results .pass {
+    color: var(--color-pass);
+}
+
+.summary.fail,
+.results .fail {
+    color: var(--color-fail);
+}
+
+.results {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: 0;
+    list-style: none;
+}

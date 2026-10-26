@@ -98,3 +98,39 @@ export function assertDeepEquals(actual, expected) {
         throw new Error(`erwartet ${format(expected)}, erhalten ${format(actual)}`);
     }
 }
+
+/**
+ * Führt alle registrierten Tests aus und zeigt das Ergebnis an.
+ * Jeder Test läuft in einem eigenen try/catch, damit ein Fehler
+ * die übrigen Tests nicht abbricht.
+ *
+ * @param {HTMLElement} output - Element, in dem das Ergebnis erscheint.
+ * @returns {void}
+ */
+export function runTests(output) {
+    const list = document.createElement('ul');
+    list.className = 'results';
+    let passed = 0;
+
+    for (const {name, fn} of tests) {
+        const item = document.createElement('li');
+
+        try {
+            fn();
+            item.className = 'pass';
+            item.textContent = `✔ bestanden: ${name}`;
+            passed += 1;
+        } catch (error) {
+            item.className = 'fail';
+            item.textContent = `✘ fehlgeschlagen: ${name} – ${error.message}`;
+        }
+
+        list.append(item);
+    }
+
+    const summary = document.createElement('p');
+    summary.className = passed === tests.length ? 'summary pass' : 'summary fail';
+    summary.textContent = `${passed} von ${tests.length} Tests bestanden`;
+
+    output.replaceChildren(summary, list);
+}
