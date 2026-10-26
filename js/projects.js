@@ -4,6 +4,7 @@
 
 /**
  * Erstellt die Karte für ein einzelnes Projekt.
+ * Alle Texte werden über textContent gesetzt, nie über innerHTML.
  *
  * @param {Project} project - Das Projekt, das dargestellt wird.
  * @returns {HTMLElement} Ein article-Element mit der Klasse "card".
@@ -25,7 +26,7 @@ export function createProjectCard(project) {
         const link = document.createElement('a');
         link.href = project.repoUrl;
         link.textContent = 'Zum Repository';
-        link.setAttribute('aria-label', `Repository von ${project.title}`);
+        link.setAttribute('aria-label', `Zum Repository von ${project.title}`);
         linkParagraph.append(link);
         card.append(linkParagraph);
     }
@@ -47,7 +48,7 @@ export function createProjectCard(project) {
 }
 
 /**
- * Ersetzt den Inhalt meines Containers durch Karten für alle Projekte.
+ * Ersetzt den Inhalt eines Containers durch Karten für alle Projekte.
  *
  * @param {HTMLElement} container - Das Element, in das die Karten kommen.
  * @param {Project[]} projects - Die Projekte in der gewünschten Reihenfolge.

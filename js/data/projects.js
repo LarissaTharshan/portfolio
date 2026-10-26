@@ -37,22 +37,23 @@ export const projects = [
     {
         id: 'gender-gap-tech',
         title: 'Gender Gap in Tech',
-        description: 'Teamprojekt: Datenvisualisierung zum Frauenanteil in der IT-Branche.',
-        tags: ['Datenvisualisierung'],
+        description: 'Teamprojekt: interaktive Datenstory mit D3 zur Frage, wo der Gender Gap in der Informatik beginnt.',
+        tags: ['D3.js', 'JavaScript'],
         year: 2026
     },
     {
         id: 'hikelog',
         title: 'HikeLog',
-        description: 'Teamprojekt: Android-App zum Erfassen von Wanderungen.',
+        description: 'Teamprojekt: Android-App zum Finden von Schweizer Wanderungen nach Stimmung und Thema.',
         tags: ['Kotlin', 'Android'],
         year: 2026
     },
     {
         id: 'nutritrack',
         title: 'NutriTrack AI & Motion',
-        description: 'Android-App rund um Ernährung und Bewegung.',
-        tags: ['Kotlin', 'Android'],
-        year: 2026
+        description: 'Android-App, die Rezepte an das persönliche Proteinziel anpasst.',
+        tags: ['Kotlin', 'Jetpack Compose', 'Android'],
+        year: 2026,
+        repoUrl: 'https://github.com/LarissaTharshan/NutriTrack-AI-Motion'
     }
 ];
