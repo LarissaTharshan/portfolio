@@ -21,3 +21,19 @@ export function getAllTags(projects) {
 
     return [...tags].sort((a, b) => a.localeCompare(b, 'de'));
 }
+
+/**
+ * Filtert Projekte nach einem Tag.
+ * Reine Funktion: Das übergebene Array wird nicht verändert.
+ *
+ * @param {Project[]} projects - Die Projekte.
+ * @param {string|null} tag - Der gesuchte Tag. Bei null kommen alle Projekte zurück.
+ * @returns {Project[]} Ein neues Array mit den passenden Projekten.
+ */
+export function filterProjectsByTag(projects, tag) {
+    if (tag === null) {
+        return [...projects];
+    }
+
+    return projects.filter((project) => project.tags.includes(tag));
+}

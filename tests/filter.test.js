@@ -1,5 +1,5 @@
-import {test, assertDeepEquals} from './runner.js';
-import {getAllTags} from '../js/filter.js';
+import {test, assertEquals, assertDeepEquals} from './runner.js';
+import {filterProjectsByTag, getAllTags} from '../js/filter.js';
 
 /**
  * Erzeugt ein kleines Testprojekt, unabhängig von den echten Daten.
@@ -16,6 +16,19 @@ function makeProject(id, tags) {
         tags,
         year: 2026
     };
+}
+
+/**
+ * Drei Testprojekte mit überlappenden Tags.
+ *
+ * @returns {import('../js/data/projects.js').Project[]} Testprojekte.
+ */
+function sampleProjects() {
+    return [
+        makeProject('a', ['Kotlin', 'Android']),
+        makeProject('b', ['Swift']),
+        makeProject('c', ['Kotlin'])
+    ];
 }
 
 /* getAllTags */
@@ -37,4 +50,31 @@ test('getAllTags: Gross- und Kleinschreibung wird beim Sortieren korrekt behande
 
 test('getAllTags: leeres Array ergibt leeres Array', () => {
     assertDeepEquals(getAllTags([]), []);
+});
+
+/* filterProjectsByTag */
+
+test('filterProjectsByTag: null liefert alle Projekte', () => {
+    const result = filterProjectsByTag(sampleProjects(), null);
+    assertDeepEquals(result.map((project) => project.id), ['a', 'b', 'c']);
+});
+
+test('filterProjectsByTag: nur Projekte mit dem Tag', () => {
+    const result = filterProjectsByTag(sampleProjects(), 'Kotlin');
+    assertDeepEquals(result.map((project) => project.id), ['a', 'c']);
+});
+
+test('filterProjectsByTag: unbekannter Tag liefert leeres Array', () => {
+    assertDeepEquals(filterProjectsByTag(sampleProjects(), 'Rust'), []);
+});
+
+test('filterProjectsByTag: ursprüngliches Array bleibt unverändert', () => {
+    const input = sampleProjects();
+    filterProjectsByTag(input, 'Swift');
+    assertDeepEquals(input.map((project) => project.id), ['a', 'b', 'c']);
+});
+
+test('filterProjectsByTag: auch bei null kommt ein neues Array zurück', () => {
+    const input = sampleProjects();
+    assertEquals(filterProjectsByTag(input, null) === input, false);
 });
