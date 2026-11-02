@@ -60,3 +60,12 @@ test('createTimelineItem: Titel und Ort stehen im Eintrag', () => {
     assertEquals(item.querySelector('h3').textContent, 'Station a');
     assertEquals(item.querySelector('.timeline-place').textContent, 'Ort');
 });
+
+test('createTimelineItem: HTML im Titel wird als Text angezeigt (XSS-Schutz)', () => {
+    const htmlTitle = '<img src="x">';
+    const entry = makeEntry('a', 2024);
+    entry.title = htmlTitle;
+    const item = createTimelineItem(entry);
+    assertEquals(item.querySelector('img'), null);
+    assertEquals(item.querySelector('h3').textContent, htmlTitle);
+});

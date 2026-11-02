@@ -25,6 +25,11 @@ export function test(name, fn) {
 /**
  * Wandelt einen Wert in lesbaren Text für Fehlermeldungen um.
  *
+ * Grenze: Objekte werden mit JSON.stringify dargestellt. Dabei fallen
+ * Schlüssel mit dem Wert undefined weg. Die Meldung kann deshalb
+ * "erwartet {}, erhalten {}" lauten, obwohl sich die Objekte unterscheiden.
+ * Der Vergleich selbst (isDeepEqual) ist davon nicht betroffen.
+ *
  * @param {*} value - Ein beliebiger Wert.
  * @returns {string} Lesbare Darstellung des Werts.
  */
@@ -116,7 +121,7 @@ export function runTests(output) {
         const item = document.createElement('li');
 
         try {
-            fn();
+            let fn1 = fn();
             item.className = 'pass';
             item.textContent = `✔ bestanden: ${name}`;
             passed += 1;
