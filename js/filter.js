@@ -37,3 +37,67 @@ export function filterProjectsByTag(projects, tag) {
 
     return projects.filter((project) => project.tags.includes(tag));
 }
+
+/**
+ * Liest den Tag aus einem Filter-Button.
+ * Der "Alle"-Button hat ein leeres data-tag und steht für null.
+ *
+ * @param {HTMLElement} button - Ein Filter-Button.
+ * @returns {string|null} Der Tag oder null für "Alle".
+ */
+export function tagFromButton(button) {
+    return button.dataset.tag === '' ? null : button.dataset.tag;
+}
+
+/**
+ * Erstellt einen einzelnen Filter-Button.
+ *
+ * @param {string} label - Sichtbarer Text des Buttons.
+ * @param {string|null} tag - Der Tag oder null für "Alle".
+ * @param {boolean} isActive - Ob dieser Filter gerade aktiv ist.
+ * @returns {HTMLButtonElement} Ein button-Element mit der Klasse "filter-button".
+ */
+export function createFilterButton(label, tag, isActive) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'filter-button';
+    button.textContent = label;
+    button.dataset.tag = tag ?? '';
+    button.setAttribute('aria-pressed', String(isActive));
+
+    return button;
+}
+
+/**
+ * Ersetzt den Inhalt eines Containers durch einen "Alle"-Button
+ * und einen Button pro Tag.
+ *
+ * @param {HTMLElement} container - Das Element, in das die Buttons kommen.
+ * @param {string[]} tags - Alle verfügbaren Tags.
+ * @param {string|null} activeTag - Der aktive Tag oder null für "Alle".
+ * @returns {void}
+ */
+export function renderFilterButtons(container, tags, activeTag) {
+    const fragment = document.createDocumentFragment();
+
+    fragment.append(createFilterButton('Alle', null, activeTag === null));
+
+    for (const tag of tags) {
+        fragment.append(createFilterButton(tag, tag, tag === activeTag));
+    }
+
+    container.replaceChildren(fragment);
+}
+
+/**
+ * Setzt aria-pressed bei allen Filter-Buttons passend zum aktiven Tag.
+ *
+ * @param {HTMLElement} container - Der Container mit den Filter-Buttons.
+ * @param {string|null} activeTag - Der aktive Tag oder null für "Alle".
+ * @returns {void}
+ */
+export function updatePressedState(container, activeTag) {
+    for (const button of container.querySelectorAll('.filter-button')) {
+        button.setAttribute('aria-pressed', String(tagFromButton(button) === activeTag));
+    }
+}

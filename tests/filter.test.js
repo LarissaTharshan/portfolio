@@ -1,5 +1,5 @@
 import {test, assertEquals, assertDeepEquals} from './runner.js';
-import {filterProjectsByTag, getAllTags} from '../js/filter.js';
+import {filterProjectsByTag, getAllTags, renderFilterButtons, tagFromButton, updatePressedState} from '../js/filter.js';
 
 /**
  * Erzeugt ein kleines Testprojekt, unabhängig von den echten Daten.
@@ -77,4 +77,32 @@ test('filterProjectsByTag: ursprüngliches Array bleibt unverändert', () => {
 test('filterProjectsByTag: auch bei null kommt ein neues Array zurück', () => {
     const input = sampleProjects();
     assertEquals(filterProjectsByTag(input, null) === input, false);
+});
+
+/* Filter-Buttons */
+
+test('renderFilterButtons: "Alle" plus ein Button pro Tag', () => {
+    const container = document.createElement('div');
+    renderFilterButtons(container, ['Kotlin', 'Swift'], null);
+    const buttons = container.querySelectorAll('button');
+    assertEquals(buttons.length, 3);
+    assertEquals(buttons[0].textContent, 'Alle');
+    assertEquals(buttons[0].getAttribute('aria-pressed'), 'true');
+    assertEquals(tagFromButton(buttons[0]), null);
+});
+
+test('renderFilterButtons: alle Buttons haben type="button"', () => {
+    const container = document.createElement('div');
+    renderFilterButtons(container, ['Kotlin', 'Swift'], null);
+    for (const button of container.querySelectorAll('button')) {
+        assertEquals(button.getAttribute('type'), 'button');
+    }
+});
+
+test('updatePressedState: nur der aktive Button ist gedrückt', () => {
+    const container = document.createElement('div');
+    renderFilterButtons(container, ['Kotlin', 'Swift'], null);
+    updatePressedState(container, 'Swift');
+    const pressed = [...container.querySelectorAll('button')].map((button) => button.getAttribute('aria-pressed'));
+    assertDeepEquals(pressed, ['false', 'false', 'true']);
 });
