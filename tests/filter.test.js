@@ -1,5 +1,12 @@
 import {test, assertEquals, assertDeepEquals} from './runner.js';
-import {filterProjectsByTag, getAllTags, renderFilterButtons, tagFromButton, updatePressedState} from '../js/filter.js';
+import {
+    filterProjectsByTag,
+    formatResultCount,
+    getAllTags,
+    renderFilterButtons,
+    tagFromButton,
+    updatePressedState
+} from '../js/filter.js';
 
 /**
  * Erzeugt ein kleines Testprojekt, unabhängig von den echten Daten.
@@ -105,4 +112,18 @@ test('updatePressedState: nur der aktive Button ist gedrückt', () => {
     updatePressedState(container, 'Swift');
     const pressed = [...container.querySelectorAll('button')].map((button) => button.getAttribute('aria-pressed'));
     assertDeepEquals(pressed, ['false', 'false', 'true']);
+});
+
+/* formatResultCount */
+
+test('formatResultCount: 0 in der Mehrzahl', () => {
+    assertEquals(formatResultCount(0), '0 Projekte angezeigt');
+});
+
+test('formatResultCount: 1 in der Einzahl', () => {
+    assertEquals(formatResultCount(1), '1 Projekt angezeigt');
+});
+
+test('formatResultCount: 3 in der Mehrzahl', () => {
+    assertEquals(formatResultCount(3), '3 Projekte angezeigt');
 });

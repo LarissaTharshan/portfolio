@@ -2,10 +2,18 @@ import {projects} from './data/projects.js';
 import {timeline} from './data/timeline.js';
 import {renderProjects, sortProjectsByYear} from './projects.js';
 import {renderTimeline, sortTimeline} from './timeline.js';
-import {filterProjectsByTag, getAllTags, renderFilterButtons, tagFromButton, updatePressedState} from './filter.js';
+import {
+    filterProjectsByTag,
+    formatResultCount,
+    getAllTags,
+    renderFilterButtons,
+    tagFromButton,
+    updatePressedState
+} from './filter.js';
 
 const projectContainer = document.getElementById('project-list');
 const filterContainer = document.getElementById('project-filter');
+const statusElement = document.getElementById('project-status');
 
 /**
  * Der aktuell aktive Filter. null bedeutet "Alle".
@@ -26,7 +34,7 @@ function showProjects() {
     return visibleProjects.length;
 }
 
-if (projectContainer && filterContainer) {
+if (projectContainer && filterContainer && statusElement) {
     renderFilterButtons(filterContainer, getAllTags(projects), activeTag);
     showProjects();
 
@@ -38,8 +46,9 @@ if (projectContainer && filterContainer) {
         }
 
         activeTag = tagFromButton(button);
-        showProjects();
+        const count = showProjects();
         updatePressedState(filterContainer, activeTag);
+        statusElement.textContent = formatResultCount(count);
     });
 }
 

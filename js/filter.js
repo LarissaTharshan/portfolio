@@ -101,3 +101,19 @@ export function updatePressedState(container, activeTag) {
         button.setAttribute('aria-pressed', String(tagFromButton(button) === activeTag));
     }
 }
+
+/**
+ * Erzeugt den Ansagetext für die Anzahl angezeigter Projekte,
+ * mit korrekter Einzahl und Mehrzahl.
+ * Reine Funktion ohne DOM-Zugriff.
+ *
+ * @param {number} count - Anzahl der angezeigten Projekte.
+ * @returns {string} Zum Beispiel "1 Projekt angezeigt" oder "3 Projekte angezeigt".
+ */
+export function formatResultCount(count) {
+    if (count === 1) {
+        return '1 Projekt angezeigt';
+    }
+
+    return `${count} Projekte angezeigt`;
+}
