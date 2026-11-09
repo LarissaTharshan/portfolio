@@ -71,3 +71,34 @@ export function pluralKey(language, baseKey, count) {
 
     return category === 'one' ? `${baseKey}.one` : `${baseKey}.other`;
 }
+
+/**
+ * Bestimmt die Sprache der Seite.
+ * Reine Funktion: Liest nicht selbst aus navigator oder localStorage,
+ * sondern bekommt alle Werte als Parameter.
+ *
+ * Reihenfolge:
+ * 1. gespeicherte Sprache, falls sie unterstützt wird,
+ * 2. erste Browsersprache, deren Präfix unterstützt wird ("de-CH" → "de"),
+ * 3. sonst die Standardsprache.
+ *
+ * @param {string|null} storedLanguage - Gespeicherte Sprache oder null.
+ * @param {string[]} browserLanguages - Sprachen des Browsers, z. B. ["de-CH", "en"].
+ * @param {string[]} supportedLanguages - Unterstützte Sprachen.
+ * @returns {string} Die zu verwendende Sprache.
+ */
+export function detectLanguage(storedLanguage, browserLanguages, supportedLanguages) {
+    if (storedLanguage !== null && supportedLanguages.includes(storedLanguage)) {
+        return storedLanguage;
+    }
+
+    for (const browserLanguage of browserLanguages) {
+        const prefix = browserLanguage.split('-')[0].toLowerCase();
+
+        if (supportedLanguages.includes(prefix)) {
+            return prefix;
+        }
+    }
+
+    return DEFAULT_LANGUAGE;
+}

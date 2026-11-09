@@ -1,5 +1,5 @@
 import {test, assertEquals} from './runner.js';
-import {createTranslator, pluralKey, translate} from '../js/i18n.js';
+import {createTranslator, detectLanguage, pluralKey, translate} from '../js/i18n.js';
 
 /** Kleines Test-Wörterbuch, unabhängig von den echten Texten. */
 const dictionary = {
@@ -15,6 +15,9 @@ const dictionary = {
         two: '{a} and {b}'
     }
 };
+
+/** Unterstützte Sprachen für die Tests. */
+const supported = ['de', 'en'];
 
 /* translate */
 
@@ -70,4 +73,26 @@ test('pluralKey: Deutsch, 3 ist Mehrzahl', () => {
 
 test('pluralKey: Englisch, 1 ist Einzahl', () => {
     assertEquals(pluralKey('en', 'results', 1), 'results.one');
+});
+
+/* detectLanguage */
+
+test('detectLanguage: gespeicherte Sprache gewinnt', () => {
+    assertEquals(detectLanguage('en', ['de-CH'], supported), 'en');
+});
+
+test('detectLanguage: de-CH wird zu de', () => {
+    assertEquals(detectLanguage(null, ['de-CH', 'en'], supported), 'de');
+});
+
+test('detectLanguage: en-US wird zu en', () => {
+    assertEquals(detectLanguage(null, ['en-US'], supported), 'en');
+});
+
+test('detectLanguage: nicht unterstützte Sprache ergibt Deutsch', () => {
+    assertEquals(detectLanguage(null, ['fr-FR'], supported), 'de');
+});
+
+test('detectLanguage: ungültige gespeicherte Sprache wird ignoriert', () => {
+    assertEquals(detectLanguage('xx', ['en-US'], supported), 'en');
 });
