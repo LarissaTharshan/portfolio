@@ -3,13 +3,18 @@
  */
 
 /**
+ * @typedef {import('./i18n.js').Translator} Translator
+ */
+
+/**
  * Erstellt die Karte für ein einzelnes Projekt.
  * Alle Texte werden über textContent gesetzt, nie über innerHTML.
  *
  * @param {Project} project - Das Projekt, das dargestellt wird.
+ * @param {Translator} t - Übersetzungsfunktion.
  * @returns {HTMLElement} Ein article-Element mit der Klasse "card".
  */
-export function createProjectCard(project) {
+export function createProjectCard(project, t) {
     const card = document.createElement('article');
     card.className = 'card';
 
@@ -25,15 +30,15 @@ export function createProjectCard(project) {
         const linkParagraph = document.createElement('p');
         const link = document.createElement('a');
         link.href = project.repoUrl;
-        link.textContent = 'Zum Repository';
-        link.setAttribute('aria-label', `Zum Repository von ${project.title}`);
+        link.textContent = t('project.repoLink');
+        link.setAttribute('aria-label', t('project.repoLabel', {title: project.title}));
         linkParagraph.append(link);
         card.append(linkParagraph);
     }
 
     const tagList = document.createElement('ul');
     tagList.className = 'tag-list';
-    tagList.setAttribute('aria-label', 'Technologien');
+    tagList.setAttribute('aria-label', t('project.tags'));
 
     for (const tag of project.tags) {
         const item = document.createElement('li');
@@ -52,13 +57,14 @@ export function createProjectCard(project) {
  *
  * @param {HTMLElement} container - Das Element, in das die Karten kommen.
  * @param {Project[]} projects - Die Projekte in der gewünschten Reihenfolge.
+ * @param {Translator} t - Übersetzungsfunktion.
  * @returns {void}
  */
-export function renderProjects(container, projects) {
+export function renderProjects(container, projects, t) {
     const fragment = document.createDocumentFragment();
 
     for (const project of projects) {
-        fragment.append(createProjectCard(project));
+        fragment.append(createProjectCard(project, t));
     }
 
     container.replaceChildren(fragment);
