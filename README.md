@@ -13,24 +13,28 @@ Sie dient gleichzeitig als Übungsprojekt für sauberes, getestetes Frontend ohn
 - Keine Frameworks, keine Bibliotheken, kein npm, keine CDNs
 - Logik (`js/`), Daten (`js/data/`) und Tests (`tests/`) sind getrennt
 - Inhalte werden über `textContent` gesetzt, nie über `innerHTML`
+- Anzeigetexte im JavaScript stehen nur im Wörterbuch, nie fest im Code
 
 ## Projektstruktur
 
 ```
 portfolio/
-├── index.html              Einstiegsseite
-├── css/style.css           Styles
-├── js/main.js              Einstiegspunkt, verbindet Daten und Rendering
-├── js/projects.js          Projektkarten: Rendering und Sortierung
-├── js/timeline.js          Werdegang: Rendering, Sortierung, Zeitraum-Format
-├── js/data/projects.js     Projektdaten
-├── js/data/timeline.js     Werdegang-Daten
-├── tests/test.html         Testseite im Browser
-├── tests/test.css          Styles der Testseite
-├── tests/index.js          Lädt alle Tests und startet den Runner
-├── tests/runner.js         Eigener Test-Runner
-├── tests/*.test.js         Tests
-└── assets/                 Bilder und Icons
+├── index.html                Einstiegsseite
+├── css/style.css             Styles
+├── js/main.js                Einstiegspunkt, verbindet Daten und Rendering
+├── js/projects.js            Projektkarten: Rendering und Sortierung
+├── js/timeline.js            Werdegang: Rendering, Sortierung, Zeitraum-Format
+├── js/filter.js              Technologie-Filter: Tags, Filtern, Buttons, Ansage
+├── js/i18n.js                Übersetzung, Einzahl/Mehrzahl, Spracherkennung
+├── js/data/projects.js       Projektdaten
+├── js/data/timeline.js       Werdegang-Daten
+├── js/data/translations.js   Wörterbuch (Deutsch und Englisch)
+├── tests/test.html           Testseite im Browser
+├── tests/test.css            Styles der Testseite
+├── tests/index.js            Lädt alle Tests und startet den Runner
+├── tests/runner.js           Eigener Test-Runner
+├── tests/*.test.js           Tests
+└── assets/                   Bilder und Icons
 ```
 
 ## Lokal starten
@@ -56,7 +60,7 @@ Die Tests laufen im Browser mit einem eigenen Test-Runner, ohne externe Abhängi
 
 **Variante 2 (Terminal):** Server wie oben starten und http://localhost:8000/tests/test.html öffnen.
 
-Oben auf der Seite steht die Zusammenfassung, zum Beispiel "24 von 24 Tests bestanden".
+Oben auf der Seite steht die Zusammenfassung "X von Y Tests bestanden".
 Darunter steht jeder Test mit ✔ (bestanden) oder ✘ (fehlgeschlagen) samt Fehlermeldung.
 
 ### Neuen Test hinzufügen
@@ -65,3 +69,12 @@ Darunter steht jeder Test mit ✔ (bestanden) oder ✘ (fehlgeschlagen) samt Feh
    importieren.
 2. Den Test mit `test('Beschreibung', () => { … });` schreiben.
 3. Neue Testdateien in `tests/index.js` importieren.
+
+## Übersetzungen
+
+Alle Texte, die per JavaScript erzeugt werden, stehen in `js/data/translations.js`.
+
+- Platzhalter stehen in geschweiften Klammern, zum Beispiel `"seit {year}"`.
+- Fehlt ein Schlüssel in einer Sprache, wird Deutsch verwendet.
+- Fehlt er auch dort, erscheint der Schlüssel selbst auf der Seite. So fallen fehlende Übersetzungen sofort auf.
+- Für Einzahl und Mehrzahl gibt es zwei Schlüssel mit der Endung `.one` und `.other`.
