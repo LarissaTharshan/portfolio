@@ -1,5 +1,14 @@
 import {test, assertEquals, assertDeepEquals} from './runner.js';
 import {createTimelineItem, formatPeriod, sortTimeline} from '../js/timeline.js';
+import {createTranslator} from '../js/i18n.js';
+
+/** Test-Übersetzungen, unabhängig von den echten Texten. */
+const testTranslations = {
+    de: {'period.since': 'seit {year}'},
+    en: {'period.since': 'since {year}'}
+};
+
+const t = createTranslator(testTranslations, 'de');
 
 /**
  * Erzeugt eine kleine Test-Station, unabhängig von den echten Daten.
@@ -23,15 +32,20 @@ function makeEntry(id, startYear, endYear) {
 /* formatPeriod */
 
 test('formatPeriod: ohne Endjahr wird "seit" angezeigt', () => {
-    assertEquals(formatPeriod(2024), 'seit 2024');
+    assertEquals(formatPeriod(t, 2024), 'seit 2024');
+});
+
+test('formatPeriod: ohne Endjahr auf Englisch', () => {
+    const tEnglish = createTranslator(testTranslations, 'en');
+    assertEquals(formatPeriod(tEnglish, 2024), 'since 2024');
 });
 
 test('formatPeriod: Start- und Endjahr mit Gedankenstrich', () => {
-    assertEquals(formatPeriod(2019, 2022), '2019 – 2022');
+    assertEquals(formatPeriod(t, 2019, 2022), '2019 – 2022');
 });
 
 test('formatPeriod: gleiches Start- und Endjahr erscheint nur einmal', () => {
-    assertEquals(formatPeriod(2023, 2023), '2023');
+    assertEquals(formatPeriod(t, 2023, 2023), '2023');
 });
 
 /* sortTimeline */
@@ -51,12 +65,12 @@ test('sortTimeline: ursprüngliches Array bleibt unverändert', () => {
 /* createTimelineItem */
 
 test('createTimelineItem: Zeitraum wird formatiert angezeigt', () => {
-    const item = createTimelineItem(makeEntry('a', 2024));
+    const item = createTimelineItem(makeEntry('a', 2024), t);
     assertEquals(item.querySelector('.timeline-date').textContent, 'seit 2024');
 });
 
 test('createTimelineItem: Titel und Ort stehen im Eintrag', () => {
-    const item = createTimelineItem(makeEntry('a', 2020, 2023));
+    const item = createTimelineItem(makeEntry('a', 2020, 2023), t);
     assertEquals(item.querySelector('h3').textContent, 'Station a');
     assertEquals(item.querySelector('.timeline-place').textContent, 'Ort');
 });
@@ -65,7 +79,7 @@ test('createTimelineItem: HTML im Titel wird als Text angezeigt (XSS-Schutz)', (
     const htmlTitle = '<img src="x">';
     const entry = makeEntry('a', 2024);
     entry.title = htmlTitle;
-    const item = createTimelineItem(entry);
+    const item = createTimelineItem(entry, t);
     assertEquals(item.querySelector('img'), null);
     assertEquals(item.querySelector('h3').textContent, htmlTitle);
 });
