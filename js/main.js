@@ -34,9 +34,12 @@ function showProjects() {
     return visibleProjects.length;
 }
 
-if (projectContainer && filterContainer && statusElement) {
-    renderFilterButtons(filterContainer, getAllTags(projects), activeTag);
+if (projectContainer) {
     showProjects();
+}
+
+if (projectContainer && filterContainer) {
+    renderFilterButtons(filterContainer, getAllTags(projects), activeTag);
 
     filterContainer.addEventListener('click', (event) => {
         const button = event.target.closest('.filter-button');
@@ -48,7 +51,10 @@ if (projectContainer && filterContainer && statusElement) {
         activeTag = tagFromButton(button);
         const count = showProjects();
         updatePressedState(filterContainer, activeTag);
-        statusElement.textContent = formatResultCount(count);
+
+        if (statusElement) {
+            statusElement.textContent = formatResultCount(count);
+        }
     });
 }
 
