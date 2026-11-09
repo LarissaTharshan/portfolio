@@ -7,6 +7,23 @@ import {
     tagFromButton,
     updatePressedState
 } from '../js/filter.js';
+import {createTranslator} from '../js/i18n.js';
+
+/** Test-Übersetzungen, unabhängig von den echten Texten. */
+const testTranslations = {
+    de: {
+        'filter.all': 'Alle',
+        'results.one': '{count} Projekt angezeigt',
+        'results.other': '{count} Projekte angezeigt'
+    },
+    en: {
+        'filter.all': 'All',
+        'results.one': '{count} project shown',
+        'results.other': '{count} projects shown'
+    }
+};
+
+const t = createTranslator(testTranslations, 'de');
 
 /**
  * Erzeugt ein kleines Testprojekt, unabhängig von den echten Daten.
@@ -90,7 +107,7 @@ test('filterProjectsByTag: auch bei null kommt ein neues Array zurück', () => {
 
 test('renderFilterButtons: "Alle" plus ein Button pro Tag', () => {
     const container = document.createElement('div');
-    renderFilterButtons(container, ['Kotlin', 'Swift'], null);
+    renderFilterButtons(container, ['Kotlin', 'Swift'], null, t);
     const buttons = container.querySelectorAll('button');
     assertEquals(buttons.length, 3);
     assertEquals(buttons[0].textContent, 'Alle');
@@ -100,7 +117,7 @@ test('renderFilterButtons: "Alle" plus ein Button pro Tag', () => {
 
 test('renderFilterButtons: alle Buttons haben type="button"', () => {
     const container = document.createElement('div');
-    renderFilterButtons(container, ['Kotlin', 'Swift'], null);
+    renderFilterButtons(container, ['Kotlin', 'Swift'], null, t);
     for (const button of container.querySelectorAll('button')) {
         assertEquals(button.getAttribute('type'), 'button');
     }
@@ -108,7 +125,7 @@ test('renderFilterButtons: alle Buttons haben type="button"', () => {
 
 test('updatePressedState: nur der aktive Button ist gedrückt', () => {
     const container = document.createElement('div');
-    renderFilterButtons(container, ['Kotlin', 'Swift'], null);
+    renderFilterButtons(container, ['Kotlin', 'Swift'], null, t);
     updatePressedState(container, 'Swift');
     const pressed = [...container.querySelectorAll('button')].map((button) => button.getAttribute('aria-pressed'));
     assertDeepEquals(pressed, ['false', 'false', 'true']);
@@ -117,13 +134,18 @@ test('updatePressedState: nur der aktive Button ist gedrückt', () => {
 /* formatResultCount */
 
 test('formatResultCount: 0 in der Mehrzahl', () => {
-    assertEquals(formatResultCount(0), '0 Projekte angezeigt');
+    assertEquals(formatResultCount(t, 'de', 0), '0 Projekte angezeigt');
 });
 
 test('formatResultCount: 1 in der Einzahl', () => {
-    assertEquals(formatResultCount(1), '1 Projekt angezeigt');
+    assertEquals(formatResultCount(t, 'de', 1), '1 Projekt angezeigt');
 });
 
 test('formatResultCount: 3 in der Mehrzahl', () => {
-    assertEquals(formatResultCount(3), '3 Projekte angezeigt');
+    assertEquals(formatResultCount(t, 'de', 3), '3 Projekte angezeigt');
+});
+
+test('formatResultCount: Englisch, 1 in der Einzahl', () => {
+    const tEnglish = createTranslator(testTranslations, 'en');
+    assertEquals(formatResultCount(tEnglish, 'en', 1), '1 project shown');
 });

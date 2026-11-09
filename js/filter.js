@@ -1,5 +1,11 @@
+import {pluralKey} from './i18n.js';
+
 /**
  * @typedef {import('./data/projects.js').Project} Project
+ */
+
+/**
+ * @typedef {import('./i18n.js').Translator} Translator
  */
 
 /**
@@ -75,12 +81,13 @@ export function createFilterButton(label, tag, isActive) {
  * @param {HTMLElement} container - Das Element, in das die Buttons kommen.
  * @param {string[]} tags - Alle verfügbaren Tags.
  * @param {string|null} activeTag - Der aktive Tag oder null für "Alle".
+ * @param {Translator} t - Übersetzungsfunktion.
  * @returns {void}
  */
-export function renderFilterButtons(container, tags, activeTag) {
+export function renderFilterButtons(container, tags, activeTag, t) {
     const fragment = document.createDocumentFragment();
 
-    fragment.append(createFilterButton('Alle', null, activeTag === null));
+    fragment.append(createFilterButton(t('filter.all'), null, activeTag === null));
 
     for (const tag of tags) {
         fragment.append(createFilterButton(tag, tag, tag === activeTag));
@@ -103,17 +110,15 @@ export function updatePressedState(container, activeTag) {
 }
 
 /**
- * Erzeugt den Ansagetext für die Anzahl angezeigter Projekte,
- * mit korrekter Einzahl und Mehrzahl.
+ * Erzeugt den übersetzten Ansagetext für die Anzahl angezeigter Projekte,
+ * mit korrekter Einzahl und Mehrzahl der jeweiligen Sprache.
  * Reine Funktion ohne DOM-Zugriff.
  *
+ * @param {Translator} t - Übersetzungsfunktion.
+ * @param {string} language - Die Sprache, z. B. "de".
  * @param {number} count - Anzahl der angezeigten Projekte.
  * @returns {string} Zum Beispiel "1 Projekt angezeigt" oder "3 Projekte angezeigt".
  */
-export function formatResultCount(count) {
-    if (count === 1) {
-        return '1 Projekt angezeigt';
-    }
-
-    return `${count} Projekte angezeigt`;
+export function formatResultCount(t, language, count) {
+    return t(pluralKey(language, 'results', count), {count});
 }

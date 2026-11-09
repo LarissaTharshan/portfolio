@@ -1,5 +1,7 @@
 import {projects} from './data/projects.js';
 import {timeline} from './data/timeline.js';
+import {translations} from './data/translations.js';
+import {createTranslator, DEFAULT_LANGUAGE} from './i18n.js';
 import {renderProjects, sortProjectsByYear} from './projects.js';
 import {renderTimeline, sortTimeline} from './timeline.js';
 import {
@@ -10,6 +12,17 @@ import {
     tagFromButton,
     updatePressedState
 } from './filter.js';
+
+/**
+ * Aktuelle Sprache der Seite.
+ * Bis der Sprachumschalter eingebaut ist, immer die Standardsprache.
+ *
+ * @type {string}
+ */
+const language = DEFAULT_LANGUAGE;
+
+/** Übersetzungsfunktion für die aktuelle Sprache. */
+const t = createTranslator(translations, language);
 
 const projectContainer = document.getElementById('project-list');
 const filterContainer = document.getElementById('project-filter');
@@ -29,7 +42,7 @@ let activeTag = null;
  */
 function showProjects() {
     const visibleProjects = sortProjectsByYear(filterProjectsByTag(projects, activeTag));
-    renderProjects(projectContainer, visibleProjects);
+    renderProjects(projectContainer, visibleProjects, t);
 
     return visibleProjects.length;
 }
@@ -39,7 +52,7 @@ if (projectContainer) {
 }
 
 if (projectContainer && filterContainer) {
-    renderFilterButtons(filterContainer, getAllTags(projects), activeTag);
+    renderFilterButtons(filterContainer, getAllTags(projects), activeTag, t);
 
     filterContainer.addEventListener('click', (event) => {
         const button = event.target.closest('.filter-button');
@@ -53,7 +66,7 @@ if (projectContainer && filterContainer) {
         updatePressedState(filterContainer, activeTag);
 
         if (statusElement) {
-            statusElement.textContent = formatResultCount(count);
+            statusElement.textContent = formatResultCount(t, language, count);
         }
     });
 }
@@ -61,5 +74,5 @@ if (projectContainer && filterContainer) {
 const timelineContainer = document.getElementById('timeline-list');
 
 if (timelineContainer) {
-    renderTimeline(timelineContainer, sortTimeline(timeline));
+    renderTimeline(timelineContainer, sortTimeline(timeline), t);
 }
