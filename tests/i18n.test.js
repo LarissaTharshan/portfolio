@@ -1,5 +1,5 @@
 import {test, assertEquals} from './runner.js';
-import {createTranslator, translate} from '../js/i18n.js';
+import {createTranslator, pluralKey, translate} from '../js/i18n.js';
 
 /** Kleines Test-Wörterbuch, unabhängig von den echten Texten. */
 const dictionary = {
@@ -52,4 +52,22 @@ test('createTranslator: merkt sich die Sprache', () => {
     const t = createTranslator(dictionary, 'en');
     assertEquals(t('greeting'), 'Hello');
     assertEquals(t('named', {name: 'Larissa'}), 'Hello Larissa');
+});
+
+/* pluralKey */
+
+test('pluralKey: Deutsch, 1 ist Einzahl', () => {
+    assertEquals(pluralKey('de', 'results', 1), 'results.one');
+});
+
+test('pluralKey: Deutsch, 0 ist Mehrzahl', () => {
+    assertEquals(pluralKey('de', 'results', 0), 'results.other');
+});
+
+test('pluralKey: Deutsch, 3 ist Mehrzahl', () => {
+    assertEquals(pluralKey('de', 'results', 3), 'results.other');
+});
+
+test('pluralKey: Englisch, 1 ist Einzahl', () => {
+    assertEquals(pluralKey('en', 'results', 1), 'results.one');
 });

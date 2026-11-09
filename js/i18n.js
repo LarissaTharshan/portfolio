@@ -53,3 +53,21 @@ export function translate(translations, language, key, values = {}) {
 export function createTranslator(translations, language) {
     return (key, values) => translate(translations, language, key, values);
 }
+
+/**
+ * Wählt den Schlüssel für Einzahl oder Mehrzahl.
+ * Verwendet die im Browser eingebaute API Intl.PluralRules.
+ *
+ * Unterstützt werden die Kategorien "one" und "other". Andere Kategorien
+ * mancher Sprachen (z. B. "few") fallen auf "other" zurück.
+ *
+ * @param {string} language - Die Sprache, z. B. "de".
+ * @param {string} baseKey - Der Grundschlüssel, z. B. "results".
+ * @param {number} count - Die Anzahl.
+ * @returns {string} Zum Beispiel "results.one" oder "results.other".
+ */
+export function pluralKey(language, baseKey, count) {
+    const category = new Intl.PluralRules(language).select(count);
+
+    return category === 'one' ? `${baseKey}.one` : `${baseKey}.other`;
+}
