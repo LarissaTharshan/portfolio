@@ -121,7 +121,7 @@ export function runTests(output) {
         const item = document.createElement('li');
 
         try {
-            let fn1 = fn();
+            fn();
             item.className = 'pass';
             item.textContent = `✔ bestanden: ${name}`;
             passed += 1;

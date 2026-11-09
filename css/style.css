@@ -314,6 +314,7 @@ section + section {
 
 .filter-button[aria-pressed="true"]::before {
     content: "✓ ";
+    content: "✓ " / "";
 }
 
 /* Nur für Screenreader sichtbar */

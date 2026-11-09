@@ -8,6 +8,7 @@
  *
  * @param {number} startYear - Startjahr.
  * @param {number} [endYear] - Endjahr. Fehlt es, läuft die Station noch.
+ * @returns {string} Zum Beispiel "2019 – 2022", "2023" oder "seit 2024".
  */
 export function formatPeriod(startYear, endYear) {
     if (endYear === undefined) {
