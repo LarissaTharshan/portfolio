@@ -1,95 +1,38 @@
 /**
- * @typedef {import('./data/timeline.js').TimelineEntry} TimelineEntry
- */
-
-/**
- * @typedef {import('./i18n.js').Translator} Translator
- */
-
-/**
- * Formatiert einen Zeitraum für die Anzeige.
- * Reine Funktion ohne DOM-Zugriff.
+ * Eine Station im Werdegang.
  *
- * @param {Translator} t - Übersetzungsfunktion.
- * @param {number} startYear - Startjahr.
- * @param {number} [endYear] - Endjahr. Fehlt es, läuft die Station noch.
- * @returns {string} Zum Beispiel "2019 – 2022", "2023" oder "seit 2024".
+ * @typedef {Object} TimelineEntry
+ * @property {string} id - Eindeutige Kennung in Kleinbuchstaben.
+ * @property {string} title - Bezeichnung der Station.
+ * @property {string} place - Ort, Firma oder Schule.
+ * @property {number} startYear - Jahr, in dem die Station begann.
+ * @property {number} [endYear] - Jahr, in dem sie endete. Fehlt, wenn sie noch läuft.
+ * @property {string} description - Kurzbeschreibung in ein bis zwei Sätzen.
  */
-export function formatPeriod(t, startYear, endYear) {
-    if (endYear === undefined) {
-        return t('period.since', {year: startYear});
+
+/** @type {TimelineEntry[]} */
+export const timeline = [
+    {
+        id: 'kv-lehre',
+        title: 'KV-Lehre',
+        place: 'UBS',
+        startYear: 2019,
+        endYear: 2022,
+        description: 'Kaufmännische Grundbildung.'
+    },
+    {
+        id: 'berufserfahrung',
+        title: 'Berufserfahrung',
+        place: 'UBS Switzerland AG',
+        startYear: 2022,
+        endYear: 2023,
+        description: 'Ein Jahr Vollzeit im Beruf vor dem Studium.'
+    },
+    {
+        id: 'studium',
+        title: 'Studium Informatik (iCompetence)',
+        place: 'FHNW',
+        startYear: 2024,
+        description: 'Bachelorstudium, Abschluss voraussichtlich 2027.'
     }
-
-    if (startYear === endYear) {
-        return String(startYear);
-    }
-
-    return `${startYear} – ${endYear}`;
-}
-
-/**
- * Sortiert Stationen nach Startjahr, die neueste zuerst.
- * Reine Funktion: Das übergebene Array wird nicht verändert.
- *
- * @param {TimelineEntry[]} entries - Die zu sortierenden Stationen.
- * @returns {TimelineEntry[]} Ein neues, sortiertes Array.
- */
-export function sortTimeline(entries) {
-    return [...entries].sort((a, b) => b.startYear - a.startYear);
-}
-
-/**
- * Erstellt den Listeneintrag für eine Station.
- * Alle Texte werden über textContent gesetzt, nie über innerHTML.
- *
- * @param {TimelineEntry} entry - Die Station, die dargestellt wird.
- * @param {Translator} t - Übersetzungsfunktion.
- * @returns {HTMLLIElement} Ein li-Element mit der Klasse "timeline-item".
- */
-export function createTimelineItem(entry, t) {
-    const item = document.createElement('li');
-    item.className = 'timeline-item';
-
-    const date = document.createElement('p');
-    date.className = 'timeline-date';
-    date.textContent = formatPeriod(t, entry.startYear, entry.endYear);
-    item.append(date);
-
-    const content = document.createElement('div');
-    content.className = 'timeline-content';
-
-    const title = document.createElement('h3');
-    title.textContent = entry.title;
-    content.append(title);
-
-    const place = document.createElement('p');
-    place.className = 'timeline-place';
-    place.textContent = entry.place;
-    content.append(place);
-
-    const description = document.createElement('p');
-    description.textContent = entry.description;
-    content.append(description);
-
-    item.append(content);
-
-    return item;
-}
-
-/**
- * Ersetzt den Inhalt eines Containers durch Einträge für alle Stationen.
- *
- * @param {HTMLElement} container - Das Element, in das die Einträge kommen.
- * @param {TimelineEntry[]} entries - Die Stationen in der gewünschten Reihenfolge.
- * @param {Translator} t - Übersetzungsfunktion.
- * @returns {void}
- */
-export function renderTimeline(container, entries, t) {
-    const fragment = document.createDocumentFragment();
-
-    for (const entry of entries) {
-        fragment.append(createTimelineItem(entry, t));
-    }
-
-    container.replaceChildren(fragment);
-}
+];

@@ -3,16 +3,21 @@
  */
 
 /**
+ * @typedef {import('./i18n.js').Translator} Translator
+ */
+
+/**
  * Formatiert einen Zeitraum für die Anzeige.
  * Reine Funktion ohne DOM-Zugriff.
  *
+ * @param {Translator} t - Übersetzungsfunktion.
  * @param {number} startYear - Startjahr.
  * @param {number} [endYear] - Endjahr. Fehlt es, läuft die Station noch.
  * @returns {string} Zum Beispiel "2019 – 2022", "2023" oder "seit 2024".
  */
-export function formatPeriod(startYear, endYear) {
+export function formatPeriod(t, startYear, endYear) {
     if (endYear === undefined) {
-        return `seit ${startYear}`;
+        return t('period.since', {year: startYear});
     }
 
     if (startYear === endYear) {
@@ -38,15 +43,16 @@ export function sortTimeline(entries) {
  * Alle Texte werden über textContent gesetzt, nie über innerHTML.
  *
  * @param {TimelineEntry} entry - Die Station, die dargestellt wird.
+ * @param {Translator} t - Übersetzungsfunktion.
  * @returns {HTMLLIElement} Ein li-Element mit der Klasse "timeline-item".
  */
-export function createTimelineItem(entry) {
+export function createTimelineItem(entry, t) {
     const item = document.createElement('li');
     item.className = 'timeline-item';
 
     const date = document.createElement('p');
     date.className = 'timeline-date';
-    date.textContent = formatPeriod(entry.startYear, entry.endYear);
+    date.textContent = formatPeriod(t, entry.startYear, entry.endYear);
     item.append(date);
 
     const content = document.createElement('div');
@@ -75,13 +81,14 @@ export function createTimelineItem(entry) {
  *
  * @param {HTMLElement} container - Das Element, in das die Einträge kommen.
  * @param {TimelineEntry[]} entries - Die Stationen in der gewünschten Reihenfolge.
+ * @param {Translator} t - Übersetzungsfunktion.
  * @returns {void}
  */
-export function renderTimeline(container, entries) {
+export function renderTimeline(container, entries, t) {
     const fragment = document.createDocumentFragment();
 
     for (const entry of entries) {
-        fragment.append(createTimelineItem(entry));
+        fragment.append(createTimelineItem(entry, t));
     }
 
     container.replaceChildren(fragment);
