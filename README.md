@@ -21,13 +21,15 @@ Sie dient gleichzeitig als Übungsprojekt für sauberes, getestetes Frontend ohn
 portfolio/
 ├── index.html                Einstiegsseite
 ├── css/style.css             Styles
-├── js/main.js                Einstiegspunkt, verbindet Daten und Rendering
+├── js/main.js                Einstiegspunkt, verbindet Daten, Rendering und Sprachwechsel
 ├── js/projects.js            Projektkarten: Rendering und Sortierung
 ├── js/timeline.js            Werdegang: Rendering, Sortierung, Zeitraum-Format
 ├── js/filter.js              Technologie-Filter: Tags, Filtern, Buttons, Ansage
-├── js/i18n.js                Übersetzung, Einzahl/Mehrzahl, Spracherkennung
-├── js/data/projects.js       Projektdaten
-├── js/data/timeline.js       Werdegang-Daten
+├── js/i18n.js                Übersetzung, Einzahl/Mehrzahl, Spracherkennung, localize (ohne DOM)
+├── js/i18n-dom.js            Übersetzungen ins HTML schreiben, Sprach-Buttons aktualisieren
+├── js/storage.js             Sicheres Lesen und Speichern der Sprache in localStorage
+├── js/data/projects.js       Projektdaten (Deutsch und Englisch)
+├── js/data/timeline.js       Werdegang-Daten (Deutsch und Englisch)
 ├── js/data/translations.js   Wörterbuch (Deutsch und Englisch)
 ├── tests/test.html           Testseite im Browser
 ├── tests/test.css            Styles der Testseite
@@ -72,9 +74,28 @@ Darunter steht jeder Test mit ✔ (bestanden) oder ✘ (fehlgeschlagen) samt Feh
 
 ## Übersetzungen
 
-Alle Texte, die per JavaScript erzeugt werden, stehen in `js/data/translations.js`.
+Die Seite ist auf Deutsch und Englisch verfügbar. Über die Buttons DE und EN im Header wird gewechselt.
+
+**Sprachwahl beim Laden:**
+
+1. zuletzt gewählte Sprache (in `localStorage`),
+2. sonst die Browsersprache (`de-CH` → Deutsch, `en-US` → Englisch),
+3. sonst Deutsch.
+
+Ist `localStorage` blockiert, funktioniert die Seite trotzdem, merkt sich die Wahl aber nicht.
+
+**Texte im JavaScript** stehen in `js/data/translations.js`:
 
 - Platzhalter stehen in geschweiften Klammern, zum Beispiel `"seit {year}"`.
 - Fehlt ein Schlüssel in einer Sprache, wird Deutsch verwendet.
 - Fehlt er auch dort, erscheint der Schlüssel selbst auf der Seite. So fallen fehlende Übersetzungen sofort auf.
 - Für Einzahl und Mehrzahl gibt es zwei Schlüssel mit der Endung `.one` und `.other`.
+
+**Texte im HTML** haben ein Attribut mit dem Schlüssel:
+
+- `data-i18n="nav.about"` übersetzt den Text des Elements.
+- `data-i18n-aria-label="nav.label"` übersetzt das `aria-label`.
+- Der deutsche Text steht zusätzlich direkt im HTML, damit die Seite auch ohne JavaScript lesbar ist.
+
+**Daten** (Titel, Beschreibungen) sind entweder ein einfacher Text, der in allen Sprachen gleich ist,
+oder ein Objekt wie `{de: '…', en: '…'}`.
