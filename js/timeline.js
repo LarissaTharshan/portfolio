@@ -1,3 +1,5 @@
+import {localize} from './i18n.js';
+
 /**
  * @typedef {import('./data/timeline.js').TimelineEntry} TimelineEntry
  */
@@ -44,9 +46,10 @@ export function sortTimeline(entries) {
  *
  * @param {TimelineEntry} entry - Die Station, die dargestellt wird.
  * @param {Translator} t - Übersetzungsfunktion.
+ * @param {string} language - Aktuelle Sprache für mehrsprachige Daten.
  * @returns {HTMLLIElement} Ein li-Element mit der Klasse "timeline-item".
  */
-export function createTimelineItem(entry, t) {
+export function createTimelineItem(entry, t, language) {
     const item = document.createElement('li');
     item.className = 'timeline-item';
 
@@ -59,7 +62,7 @@ export function createTimelineItem(entry, t) {
     content.className = 'timeline-content';
 
     const title = document.createElement('h3');
-    title.textContent = entry.title;
+    title.textContent = localize(entry.title, language);
     content.append(title);
 
     const place = document.createElement('p');
@@ -68,7 +71,7 @@ export function createTimelineItem(entry, t) {
     content.append(place);
 
     const description = document.createElement('p');
-    description.textContent = entry.description;
+    description.textContent = localize(entry.description, language);
     content.append(description);
 
     item.append(content);
@@ -82,13 +85,14 @@ export function createTimelineItem(entry, t) {
  * @param {HTMLElement} container - Das Element, in das die Einträge kommen.
  * @param {TimelineEntry[]} entries - Die Stationen in der gewünschten Reihenfolge.
  * @param {Translator} t - Übersetzungsfunktion.
+ * @param {string} language - Aktuelle Sprache für mehrsprachige Daten.
  * @returns {void}
  */
-export function renderTimeline(container, entries, t) {
+export function renderTimeline(container, entries, t, language) {
     const fragment = document.createDocumentFragment();
 
     for (const entry of entries) {
-        fragment.append(createTimelineItem(entry, t));
+        fragment.append(createTimelineItem(entry, t, language));
     }
 
     container.replaceChildren(fragment);

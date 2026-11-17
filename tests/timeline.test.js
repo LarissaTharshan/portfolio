@@ -65,21 +65,28 @@ test('sortTimeline: ursprüngliches Array bleibt unverändert', () => {
 /* createTimelineItem */
 
 test('createTimelineItem: Zeitraum wird formatiert angezeigt', () => {
-    const item = createTimelineItem(makeEntry('a', 2024), t);
+    const item = createTimelineItem(makeEntry('a', 2024), t, 'de');
     assertEquals(item.querySelector('.timeline-date').textContent, 'seit 2024');
 });
 
 test('createTimelineItem: Titel und Ort stehen im Eintrag', () => {
-    const item = createTimelineItem(makeEntry('a', 2020, 2023), t);
+    const item = createTimelineItem(makeEntry('a', 2020, 2023), t, 'de');
     assertEquals(item.querySelector('h3').textContent, 'Station a');
     assertEquals(item.querySelector('.timeline-place').textContent, 'Ort');
+});
+
+test('createTimelineItem: Titel erscheint in der gewählten Sprache', () => {
+    const entry = makeEntry('a', 2024);
+    entry.title = {de: 'Studium', en: 'Studies'};
+    const item = createTimelineItem(entry, t, 'en');
+    assertEquals(item.querySelector('h3').textContent, 'Studies');
 });
 
 test('createTimelineItem: HTML im Titel wird als Text angezeigt (XSS-Schutz)', () => {
     const htmlTitle = '<img src="x">';
     const entry = makeEntry('a', 2024);
     entry.title = htmlTitle;
-    const item = createTimelineItem(entry, t);
+    const item = createTimelineItem(entry, t, 'de');
     assertEquals(item.querySelector('img'), null);
     assertEquals(item.querySelector('h3').textContent, htmlTitle);
 });

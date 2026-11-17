@@ -42,7 +42,7 @@ let activeTag = null;
  */
 function showProjects() {
     const visibleProjects = sortProjectsByYear(filterProjectsByTag(projects, activeTag));
-    renderProjects(projectContainer, visibleProjects, t);
+    renderProjects(projectContainer, visibleProjects, t, language);
 
     return visibleProjects.length;
 }
@@ -74,5 +74,5 @@ if (projectContainer && filterContainer) {
 const timelineContainer = document.getElementById('timeline-list');
 
 if (timelineContainer) {
-    renderTimeline(timelineContainer, sortTimeline(timeline), t);
+    renderTimeline(timelineContainer, sortTimeline(timeline), t, language);
 }

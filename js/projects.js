@@ -1,3 +1,5 @@
+import {localize} from './i18n.js';
+
 /**
  * @typedef {import('./data/projects.js').Project} Project
  */
@@ -12,18 +14,21 @@
  *
  * @param {Project} project - Das Projekt, das dargestellt wird.
  * @param {Translator} t - Übersetzungsfunktion.
+ * @param {string} language - Aktuelle Sprache für mehrsprachige Daten.
  * @returns {HTMLElement} Ein article-Element mit der Klasse "card".
  */
-export function createProjectCard(project, t) {
+export function createProjectCard(project, t, language) {
+    const projectTitle = localize(project.title, language);
+
     const card = document.createElement('article');
     card.className = 'card';
 
     const title = document.createElement('h3');
-    title.textContent = project.title;
+    title.textContent = projectTitle;
     card.append(title);
 
     const description = document.createElement('p');
-    description.textContent = project.description;
+    description.textContent = localize(project.description, language);
     card.append(description);
 
     if (project.repoUrl) {
@@ -31,7 +36,7 @@ export function createProjectCard(project, t) {
         const link = document.createElement('a');
         link.href = project.repoUrl;
         link.textContent = t('project.repoLink');
-        link.setAttribute('aria-label', t('project.repoLabel', {title: project.title}));
+        link.setAttribute('aria-label', t('project.repoLabel', {title: projectTitle}));
         linkParagraph.append(link);
         card.append(linkParagraph);
     }
@@ -58,13 +63,14 @@ export function createProjectCard(project, t) {
  * @param {HTMLElement} container - Das Element, in das die Karten kommen.
  * @param {Project[]} projects - Die Projekte in der gewünschten Reihenfolge.
  * @param {Translator} t - Übersetzungsfunktion.
+ * @param {string} language - Aktuelle Sprache für mehrsprachige Daten.
  * @returns {void}
  */
-export function renderProjects(container, projects, t) {
+export function renderProjects(container, projects, t, language) {
     const fragment = document.createDocumentFragment();
 
     for (const project of projects) {
-        fragment.append(createProjectCard(project, t));
+        fragment.append(createProjectCard(project, t, language));
     }
 
     container.replaceChildren(fragment);
