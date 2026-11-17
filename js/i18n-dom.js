@@ -24,3 +24,16 @@ export function applyStaticTranslations(root, t) {
         element.setAttribute('aria-label', t(element.dataset.i18nAriaLabel));
     }
 }
+
+/**
+ * Setzt aria-pressed bei allen Sprach-Buttons passend zur aktiven Sprache.
+ *
+ * @param {ParentNode} container - Der Container mit den Sprach-Buttons.
+ * @param {string} language - Die aktive Sprache, z. B. "en".
+ * @returns {void}
+ */
+export function updateLanguageButtons(container, language) {
+    for (const button of container.querySelectorAll('[data-lang]')) {
+        button.setAttribute('aria-pressed', String(button.dataset.lang === language));
+    }
+}

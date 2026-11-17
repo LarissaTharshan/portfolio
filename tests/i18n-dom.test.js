@@ -1,5 +1,5 @@
-import {test, assertEquals} from './runner.js';
-import {applyStaticTranslations} from '../js/i18n-dom.js';
+import {test, assertEquals, assertDeepEquals} from './runner.js';
+import {applyStaticTranslations, updateLanguageButtons} from '../js/i18n-dom.js';
 import {createTranslator} from '../js/i18n.js';
 
 /** Test-Übersetzung, unabhängig von den echten Texten. */
@@ -45,4 +45,21 @@ test('applyStaticTranslations: Elemente ohne data-i18n bleiben unverändert', ()
     applyStaticTranslations(root, t);
 
     assertEquals(span.textContent, 'unverändert');
+});
+
+/* updateLanguageButtons */
+
+test('updateLanguageButtons: nur die aktive Sprache ist gedrückt', () => {
+    const container = document.createElement('div');
+
+    for (const code of ['de', 'en']) {
+        const button = document.createElement('button');
+        button.dataset.lang = code;
+        container.append(button);
+    }
+
+    updateLanguageButtons(container, 'en');
+
+    const pressed = [...container.querySelectorAll('button')].map((button) => button.getAttribute('aria-pressed'));
+    assertDeepEquals(pressed, ['false', 'true']);
 });

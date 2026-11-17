@@ -329,3 +329,9 @@ section + section {
     white-space: nowrap;
     border: 0;
 }
+
+/* Sprachumschalter */
+.language-switcher {
+    display: flex;
+    gap: var(--space-1);
+}
