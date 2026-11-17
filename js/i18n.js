@@ -11,6 +11,13 @@
  * @returns {string} Der übersetzte Text.
  */
 
+/**
+ * Ein Text, der entweder in allen Sprachen gleich ist (string)
+ * oder pro Sprache angegeben wird, z. B. {de: 'Werdegang', en: 'Career'}.
+ *
+ * @typedef {(string|Object.<string, string>)} LocalizedText
+ */
+
 /** Standardsprache, auf die zurückgefallen wird. */
 export const DEFAULT_LANGUAGE = 'de';
 
@@ -101,4 +108,24 @@ export function detectLanguage(storedLanguage, browserLanguages, supportedLangua
     }
 
     return DEFAULT_LANGUAGE;
+}
+
+/**
+ * Gibt einen mehrsprachigen Text in der gewünschten Sprache zurück.
+ * Reine Funktion ohne DOM-Zugriff.
+ *
+ * - Ein einfacher String wird unverändert zurückgegeben (z. B. "HikeLog").
+ * - Bei einem Objekt wird die gewünschte Sprache verwendet,
+ *   sonst die Standardsprache, sonst ein leerer Text.
+ *
+ * @param {LocalizedText} value - Der Text, einfach oder pro Sprache.
+ * @param {string} language - Die gewünschte Sprache.
+ * @returns {string} Der Text in der passenden Sprache.
+ */
+export function localize(value, language) {
+    if (typeof value === 'string') {
+        return value;
+    }
+
+    return value[language] ?? value[DEFAULT_LANGUAGE] ?? '';
 }

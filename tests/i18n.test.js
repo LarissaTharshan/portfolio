@@ -1,5 +1,5 @@
 import {test, assertEquals} from './runner.js';
-import {createTranslator, detectLanguage, pluralKey, translate} from '../js/i18n.js';
+import {createTranslator, detectLanguage, localize, pluralKey, translate} from '../js/i18n.js';
 
 /** Kleines Test-Wörterbuch, unabhängig von den echten Texten. */
 const dictionary = {
@@ -95,4 +95,22 @@ test('detectLanguage: nicht unterstützte Sprache ergibt Deutsch', () => {
 
 test('detectLanguage: ungültige gespeicherte Sprache wird ignoriert', () => {
     assertEquals(detectLanguage('xx', ['en-US'], supported), 'en');
+});
+
+/* localize */
+
+test('localize: einfacher String bleibt unverändert', () => {
+    assertEquals(localize('HikeLog', 'en'), 'HikeLog');
+});
+
+test('localize: gewünschte Sprache wird verwendet', () => {
+    assertEquals(localize({de: 'Werdegang', en: 'Career'}, 'en'), 'Career');
+});
+
+test('localize: fehlende Sprache fällt auf Deutsch zurück', () => {
+    assertEquals(localize({de: 'Nur Deutsch'}, 'en'), 'Nur Deutsch');
+});
+
+test('localize: Deutsch wird direkt verwendet', () => {
+    assertEquals(localize({de: 'Werdegang', en: 'Career'}, 'de'), 'Werdegang');
 });
