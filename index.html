@@ -12,38 +12,47 @@
 <body>
 <header>
     <p class="site-name"><a href="#about">Larissa Tharshan</a></p>
-    <nav aria-label="Hauptnavigation">
+    <nav aria-label="Hauptnavigation" data-i18n-aria-label="nav.label">
         <ul>
-            <li><a href="#about">Über mich</a></li>
-            <li><a href="#path">Werdegang</a></li>
-            <li><a href="#projects">Projekte</a></li>
-            <li><a href="#skills">Skills</a></li>
-            <li><a href="#contact">Kontakt</a></li>
+            <li><a href="#about" data-i18n="nav.about">Über mich</a></li>
+            <li><a href="#path" data-i18n="nav.path">Werdegang</a></li>
+            <li><a href="#projects" data-i18n="nav.projects">Projekte</a></li>
+            <li><a href="#skills" data-i18n="nav.skills">Skills</a></li>
+            <li><a href="#contact" data-i18n="nav.contact">Kontakt</a></li>
         </ul>
     </nav>
+    <div class="language-switcher" id="language-switcher" role="group"
+         aria-label="Sprache" data-i18n-aria-label="language.label">
+        <button type="button" class="filter-button" data-lang="de" lang="de"
+                aria-label="Deutsch" aria-pressed="true">DE
+        </button>
+        <button type="button" class="filter-button" data-lang="en" lang="en"
+                aria-label="English" aria-pressed="false">EN
+        </button>
+    </div>
 </header>
 
 <main>
     <section id="about" aria-labelledby="about-heading">
         <h1 id="about-heading">Larissa Tharshan</h1>
-        <p>Informatikstudentin (iCompetence) an der FHNW. Platzhalter: Kurzvorstellung folgt.</p>
+        <p data-i18n="about.text">Informatikstudentin (iCompetence) an der FHNW. Platzhalter: Kurzvorstellung folgt.</p>
     </section>
 
     <section id="path" aria-labelledby="path-heading">
-        <h2 id="path-heading">Werdegang</h2>
+        <h2 id="path-heading" data-i18n="path.heading">Werdegang</h2>
         <ol class="timeline" id="timeline-list"></ol>
     </section>
 
     <section id="projects" aria-labelledby="projects-heading">
-        <h2 id="projects-heading">Projekte</h2>
+        <h2 id="projects-heading" data-i18n="projects.heading">Projekte</h2>
         <div class="filter-bar" id="project-filter" role="group"
-             aria-label="Projekte nach Technologie filtern"></div>
+             aria-label="Projekte nach Technologie filtern" data-i18n-aria-label="filter.label"></div>
         <p class="visually-hidden" id="project-status" aria-live="polite"></p>
         <div class="card-grid" id="project-list"></div>
     </section>
 
     <section id="skills" aria-labelledby="skills-heading">
-        <h2 id="skills-heading">Skills</h2>
+        <h2 id="skills-heading" data-i18n="skills.heading">Skills</h2>
         <div class="skill-groups">
             <div class="skill-group">
                 <h3>Cloud &amp; DevOps</h3>
@@ -79,9 +88,10 @@
     </section>
 
     <section id="contact" aria-labelledby="contact-heading">
-        <h2 id="contact-heading">Kontakt</h2>
+        <h2 id="contact-heading" data-i18n="contact.heading">Kontakt</h2>
         <ul class="contact-list">
-            <li>E-Mail: <a href="mailto:larissa.tharshan@students.fhnw.ch">larissa.tharshan@students.fhnw.ch</a></li>
+            <li><span data-i18n="contact.email">E-Mail:</span> <a href="mailto:larissa.tharshan@students.fhnw.ch">larissa.tharshan@students.fhnw.ch</a>
+            </li>
             <li>GitHub: <a href="https://github.com/LarissaTharshan">github.com/LarissaTharshan</a></li>
         </ul>
     </section>
