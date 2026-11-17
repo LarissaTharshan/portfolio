@@ -1,7 +1,9 @@
 import {projects} from './data/projects.js';
 import {timeline} from './data/timeline.js';
 import {translations} from './data/translations.js';
-import {createTranslator, DEFAULT_LANGUAGE} from './i18n.js';
+import {createTranslator, detectLanguage, SUPPORTED_LANGUAGES} from './i18n.js';
+import {applyStaticTranslations, updateLanguageButtons} from './i18n-dom.js';
+import {getStorage, readStoredLanguage, storeLanguage} from './storage.js';
 import {renderProjects, sortProjectsByYear} from './projects.js';
 import {renderTimeline, sortTimeline} from './timeline.js';
 import {
@@ -13,23 +15,37 @@ import {
     updatePressedState
 } from './filter.js';
 
+/** Lokaler Speicher des Browsers oder null, falls blockiert. */
+const storage = getStorage();
+
 /**
  * Aktuelle Sprache der Seite.
- * Bis der Sprachumschalter eingebaut ist, immer die Standardsprache.
+ * Reihenfolge: gespeicherte Wahl, dann Browsersprache, dann Deutsch.
  *
  * @type {string}
  */
-const language = DEFAULT_LANGUAGE;
+let language = detectLanguage(
+    readStoredLanguage(storage),
+    navigator.languages ?? [],
+    SUPPORTED_LANGUAGES
+);
 
-/** Übersetzungsfunktion für die aktuelle Sprache. */
-const t = createTranslator(translations, language);
+/**
+ * Übersetzungsfunktion für die aktuelle Sprache.
+ *
+ * @type {import('./i18n.js').Translator}
+ */
+let t = createTranslator(translations, language);
 
 const projectContainer = document.getElementById('project-list');
 const filterContainer = document.getElementById('project-filter');
 const statusElement = document.getElementById('project-status');
+const timelineContainer = document.getElementById('timeline-list');
+const languageContainer = document.getElementById('language-switcher');
 
 /**
  * Der aktuell aktive Filter. null bedeutet "Alle".
+ * Bleibt beim Sprachwechsel erhalten.
  *
  * @type {string|null}
  */
@@ -47,13 +63,39 @@ function showProjects() {
     return visibleProjects.length;
 }
 
-if (projectContainer) {
-    showProjects();
+/**
+ * Wendet eine Sprache auf die ganze Seite an.
+ * Der aktive Filter bleibt dabei erhalten.
+ *
+ * @param {string} newLanguage - Die neue Sprache, z. B. "en".
+ * @returns {void}
+ */
+function applyLanguage(newLanguage) {
+    language = newLanguage;
+    t = createTranslator(translations, language);
+
+    document.documentElement.lang = language;
+    document.title = t('page.title');
+    applyStaticTranslations(document.body, t);
+
+    if (projectContainer) {
+        showProjects();
+    }
+
+    if (projectContainer && filterContainer) {
+        renderFilterButtons(filterContainer, getAllTags(projects), activeTag, t);
+    }
+
+    if (timelineContainer) {
+        renderTimeline(timelineContainer, sortTimeline(timeline), t, language);
+    }
+
+    if (languageContainer) {
+        updateLanguageButtons(languageContainer, language);
+    }
 }
 
 if (projectContainer && filterContainer) {
-    renderFilterButtons(filterContainer, getAllTags(projects), activeTag, t);
-
     filterContainer.addEventListener('click', (event) => {
         const button = event.target.closest('.filter-button');
 
@@ -71,8 +113,17 @@ if (projectContainer && filterContainer) {
     });
 }
 
-const timelineContainer = document.getElementById('timeline-list');
+if (languageContainer) {
+    languageContainer.addEventListener('click', (event) => {
+        const button = event.target.closest('[data-lang]');
 
-if (timelineContainer) {
-    renderTimeline(timelineContainer, sortTimeline(timeline), t, language);
+        if (!button || button.dataset.lang === language) {
+            return;
+        }
+
+        applyLanguage(button.dataset.lang);
+        storeLanguage(storage, language);
+    });
 }
+
+applyLanguage(language);
