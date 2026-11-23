@@ -8,6 +8,11 @@
  * - Elemente mit data-i18n="schlüssel" bekommen den übersetzten Text.
  * - Elemente mit data-i18n-aria-label="schlüssel" bekommen ein übersetztes aria-label.
  *
+ * Achtung: textContent ersetzt den gesamten Inhalt des Elements, auch
+ * verschachtelte Elemente wie Links. data-i18n gehört deshalb nur auf
+ * Elemente, die ausschliesslich Text enthalten. Steht neben dem Text ein
+ * Link, kommt der Text in ein eigenes <span data-i18n="…">.
+ *
  * Die deutschen Texte stehen zusätzlich direkt im HTML. So ist die Seite
  * auch ohne JavaScript lesbar, und Suchmaschinen sehen den Inhalt.
  *

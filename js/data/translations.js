@@ -15,6 +15,7 @@
 export const translations = {
     de: {
         'page.title': 'Larissa Tharshan – Portfolio',
+        'skip.link': 'Zum Inhalt springen',
         'nav.label': 'Hauptnavigation',
         'nav.about': 'Über mich',
         'nav.path': 'Werdegang',
@@ -22,6 +23,7 @@ export const translations = {
         'nav.skills': 'Skills',
         'nav.contact': 'Kontakt',
         'language.label': 'Sprache',
+        'theme.label': 'Dunkler Modus',
         'about.text': 'Informatikstudentin (iCompetence) an der FHNW. Platzhalter: Kurzvorstellung folgt.',
         'path.heading': 'Werdegang',
         'projects.heading': 'Projekte',
@@ -39,6 +41,7 @@ export const translations = {
     },
     en: {
         'page.title': 'Larissa Tharshan – Portfolio',
+        'skip.link': 'Skip to content',
         'nav.label': 'Main navigation',
         'nav.about': 'About me',
         'nav.path': 'Career',
@@ -46,6 +49,7 @@ export const translations = {
         'nav.skills': 'Skills',
         'nav.contact': 'Contact',
         'language.label': 'Language',
+        'theme.label': 'Dark mode',
         'about.text': 'Computer science student (iCompetence) at FHNW. Placeholder: short introduction to follow.',
         'path.heading': 'Career',
         'projects.heading': 'Projects',
@@ -55,7 +59,7 @@ export const translations = {
         'filter.label': 'Filter projects by technology',
         'filter.all': 'All',
         'project.repoLink': 'View repository',
-        'project.repoLabel': 'View repository of {title}',
+        'project.repoLabel': 'View repository for {title}',
         'project.tags': 'Technologies',
         'period.since': 'since {year}',
         'results.one': '{count} project shown',

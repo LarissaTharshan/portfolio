@@ -32,7 +32,10 @@ export const projects = [
     },
     {
         id: 'chatbot-microservices',
-        title: 'Chatbot-Microservices',
+        title: {
+            de: 'Chatbot-Microservices',
+            en: 'Chatbot microservices'
+        },
         description: {
             de: 'Teamprojekt: Microservices für Chatbots, betrieben auf Kubernetes und ausgeliefert per GitOps.',
             en: 'Team project: microservices for chatbots, running on Kubernetes and deployed via GitOps.'
