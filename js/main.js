@@ -3,7 +3,7 @@ import {timeline} from './data/timeline.js';
 import {translations} from './data/translations.js';
 import {createTranslator, detectLanguage, SUPPORTED_LANGUAGES} from './i18n.js';
 import {applyStaticTranslations, updateLanguageButtons} from './i18n-dom.js';
-import {getStorage, readStoredLanguage, storeLanguage} from './storage.js';
+import {getStorage, LANGUAGE_KEY, readStored, store} from './storage.js';
 import {renderProjects, sortProjectsByYear} from './projects.js';
 import {renderTimeline, sortTimeline} from './timeline.js';
 import {
@@ -25,7 +25,7 @@ const storage = getStorage();
  * @type {string}
  */
 let language = detectLanguage(
-    readStoredLanguage(storage),
+    readStored(storage, LANGUAGE_KEY),
     navigator.languages ?? [],
     SUPPORTED_LANGUAGES
 );
@@ -97,7 +97,7 @@ function applyLanguage(newLanguage) {
 
 if (projectContainer && filterContainer) {
     filterContainer.addEventListener('click', (event) => {
-        const button = event.target.closest('.filter-button');
+        const button = event.target.closest('[data-tag]');
 
         if (!button) {
             return;
@@ -122,7 +122,7 @@ if (languageContainer) {
         }
 
         applyLanguage(button.dataset.lang);
-        storeLanguage(storage, language);
+        store(storage, LANGUAGE_KEY, language);
     });
 }
 

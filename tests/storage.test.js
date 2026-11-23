@@ -1,5 +1,5 @@
 import {test, assertEquals} from './runner.js';
-import {readStoredLanguage, storeLanguage} from '../js/storage.js';
+import {LANGUAGE_KEY, readStored, store, THEME_KEY} from '../js/storage.js';
 
 /**
  * Ein einfacher Speicher, der sich wie localStorage verhält.
@@ -27,26 +27,34 @@ const brokenStorage = {
     }
 };
 
-test('readStoredLanguage: ohne gespeicherten Wert kommt null zurück', () => {
-    assertEquals(readStoredLanguage(fakeStorage()), null);
+test('readStored: ohne gespeicherten Wert kommt null zurück', () => {
+    assertEquals(readStored(fakeStorage(), LANGUAGE_KEY), null);
 });
 
-test('storeLanguage und readStoredLanguage: gespeicherter Wert wird gelesen', () => {
+test('store und readStored: gespeicherter Wert wird gelesen', () => {
     const storage = fakeStorage();
-    storeLanguage(storage, 'en');
-    assertEquals(readStoredLanguage(storage), 'en');
+    store(storage, LANGUAGE_KEY, 'en');
+    assertEquals(readStored(storage, LANGUAGE_KEY), 'en');
 });
 
-test('readStoredLanguage: Fehler beim Lesen ergibt null', () => {
-    assertEquals(readStoredLanguage(brokenStorage), null);
+test('store und readStored: verschiedene Schlüssel stören sich nicht', () => {
+    const storage = fakeStorage();
+    store(storage, LANGUAGE_KEY, 'en');
+    store(storage, THEME_KEY, 'dark');
+    assertEquals(readStored(storage, LANGUAGE_KEY), 'en');
+    assertEquals(readStored(storage, THEME_KEY), 'dark');
 });
 
-test('storeLanguage: Fehler beim Schreiben wird abgefangen', () => {
-    storeLanguage(brokenStorage, 'en');
-    // Würde storeLanguage den Fehler weiterwerfen, wäre dieser Test rot.
+test('readStored: Fehler beim Lesen ergibt null', () => {
+    assertEquals(readStored(brokenStorage, LANGUAGE_KEY), null);
+});
+
+test('store: Fehler beim Schreiben wird abgefangen', () => {
+    store(brokenStorage, LANGUAGE_KEY, 'en');
+    // Würde store den Fehler weiterwerfen, wäre dieser Test rot.
     assertEquals(true, true);
 });
 
-test('readStoredLanguage: ohne Speicher (null) kommt null zurück', () => {
-    assertEquals(readStoredLanguage(null), null);
+test('readStored: ohne Speicher (null) kommt null zurück', () => {
+    assertEquals(readStored(null, LANGUAGE_KEY), null);
 });

@@ -1,5 +1,11 @@
-/** Schlüssel, unter dem die Sprache im Speicher abgelegt wird. */
-const STORAGE_KEY = 'portfolio.language';
+/** Schlüssel für die gewählte Sprache. */
+export const LANGUAGE_KEY = 'portfolio.language';
+
+/**
+ * Schlüssel für das gewählte Farbschema.
+ * Muss mit dem Schlüssel im kleinen Script im <head> von index.html übereinstimmen.
+ */
+export const THEME_KEY = 'portfolio.theme';
 
 /**
  * Gibt den lokalen Speicher des Browsers zurück, falls er verfügbar ist.
@@ -17,33 +23,35 @@ export function getStorage() {
 }
 
 /**
- * Liest die gespeicherte Sprache.
+ * Liest einen gespeicherten Wert.
  * Bei fehlendem Speicher oder einem Fehler kommt null zurück.
  *
  * @param {Storage|null} storage - Der Speicher, z. B. aus getStorage().
- * @returns {string|null} Die gespeicherte Sprache oder null.
+ * @param {string} key - Der Schlüssel, z. B. LANGUAGE_KEY.
+ * @returns {string|null} Der gespeicherte Wert oder null.
  */
-export function readStoredLanguage(storage) {
+export function readStored(storage, key) {
     try {
-        return storage?.getItem(STORAGE_KEY) ?? null;
+        return storage?.getItem(key) ?? null;
     } catch {
         return null;
     }
 }
 
 /**
- * Speichert die gewählte Sprache.
+ * Speichert einen Wert.
  * Bei fehlendem Speicher oder einem Fehler passiert nichts.
- * Die Seite funktioniert dann trotzdem, nur ohne gemerkte Sprache.
+ * Die Seite funktioniert dann trotzdem, nur ohne gemerkte Wahl.
  *
  * @param {Storage|null} storage - Der Speicher, z. B. aus getStorage().
- * @param {string} language - Die zu speichernde Sprache.
+ * @param {string} key - Der Schlüssel, z. B. LANGUAGE_KEY.
+ * @param {string} value - Der zu speichernde Wert.
  * @returns {void}
  */
-export function storeLanguage(storage, language) {
+export function store(storage, key, value) {
     try {
-        storage?.setItem(STORAGE_KEY, language);
+        storage?.setItem(key, value);
     } catch {
-        // Kein Speicher verfügbar: Die Seite läuft ohne gemerkte Sprache weiter.
+        // Kein Speicher verfügbar: Die Seite läuft ohne gemerkte Wahl weiter.
     }
 }
