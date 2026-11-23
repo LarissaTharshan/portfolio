@@ -6,5 +6,6 @@ import './filter.test.js';
 import './i18n.test.js';
 import './i18n-dom.test.js';
 import './storage.test.js';
+import './theme.test.js';
 
 runTests(document.getElementById('test-output'));
