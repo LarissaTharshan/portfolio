@@ -1,7 +1,15 @@
 :root {
-    /* Farben nur für die Testseite */
+    /* Farben nur für die Testseite (hell) */
     --color-pass: #1a7f37;
     --color-fail: #b42318;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        /* Farben nur für die Testseite (dunkel) */
+        --color-pass: #4ac26b;
+        --color-fail: #ff7b72;
+    }
 }
 
 main {

@@ -57,16 +57,17 @@ export function tagFromButton(button) {
 
 /**
  * Erstellt einen einzelnen Filter-Button.
+ * Erkennbar ist er am Attribut data-tag, das Aussehen kommt von der Klasse "pill-button".
  *
  * @param {string} label - Sichtbarer Text des Buttons.
  * @param {string|null} tag - Der Tag oder null für "Alle".
  * @param {boolean} isActive - Ob dieser Filter gerade aktiv ist.
- * @returns {HTMLButtonElement} Ein button-Element mit der Klasse "filter-button".
+ * @returns {HTMLButtonElement} Ein button-Element mit data-tag und der Klasse "pill-button".
  */
 export function createFilterButton(label, tag, isActive) {
     const button = document.createElement('button');
     button.type = 'button';
-    button.className = 'filter-button';
+    button.className = 'pill-button';
     button.textContent = label;
     button.dataset.tag = tag ?? '';
     button.setAttribute('aria-pressed', String(isActive));
@@ -104,7 +105,7 @@ export function renderFilterButtons(container, tags, activeTag, t) {
  * @returns {void}
  */
 export function updatePressedState(container, activeTag) {
-    for (const button of container.querySelectorAll('.filter-button')) {
+    for (const button of container.querySelectorAll('[data-tag]')) {
         button.setAttribute('aria-pressed', String(tagFromButton(button) === activeTag));
     }
 }

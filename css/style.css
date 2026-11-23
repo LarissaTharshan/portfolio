@@ -1,5 +1,7 @@
 :root {
-    /* Farben */
+    color-scheme: light;
+
+    /* Farben (hell) */
     --color-bg: #fdfcfa;
     --color-surface: #f4f2ee;
     --color-text: #1f2328;
@@ -34,6 +36,37 @@
     --radius: 0.5rem;
     --radius-pill: 999px;
     --focus-width: 3px;
+}
+
+/*
+ * Dunkles Farbschema, Fall 1: Das System bevorzugt Dunkel,
+ * und es wurde nicht ausdrücklich "hell" gewählt.
+ * Die Werte müssen identisch zum Block darunter sein.
+ */
+@media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+        color-scheme: dark;
+        --color-bg: #16191f;
+        --color-surface: #1f242c;
+        --color-text: #e6e8eb;
+        --color-text-muted: #a3acb8;
+        --color-accent: #6cb0ff;
+        --color-border: #353c46;
+    }
+}
+
+/*
+ * Dunkles Farbschema, Fall 2: ausdrücklich gewählt (data-theme="dark").
+ * Gilt unabhängig von der Systemeinstellung.
+ */
+:root[data-theme="dark"] {
+    color-scheme: dark;
+    --color-bg: #16191f;
+    --color-surface: #1f242c;
+    --color-text: #e6e8eb;
+    --color-text-muted: #a3acb8;
+    --color-accent: #6cb0ff;
+    --color-border: #353c46;
 }
 
 /* Grundregeln */
@@ -95,6 +128,10 @@ footer {
     padding-inline: var(--space-3);
 }
 
+main:focus {
+    outline: none;
+}
+
 footer {
     padding-block: var(--space-4);
     border-top: 1px solid var(--color-border);
@@ -122,6 +159,23 @@ button:focus-visible {
     outline: var(--focus-width) solid var(--color-accent);
     outline-offset: var(--space-1);
     border-radius: var(--radius-sm);
+}
+
+/* Skip-Link: nur sichtbar, wenn er per Tastatur den Fokus hat */
+.skip-link {
+    position: absolute;
+    top: var(--space-2);
+    left: var(--space-2);
+    z-index: 10;
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--color-accent);
+    border-radius: var(--radius);
+    background-color: var(--color-bg);
+    transform: translateY(-200%);
+}
+
+.skip-link:focus {
+    transform: translateY(0);
 }
 
 /* Header und Navigation */
@@ -156,6 +210,12 @@ nav ul {
     margin: 0;
     padding: 0;
     list-style: none;
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
 }
 
 /* Sektionen */
@@ -289,7 +349,8 @@ section + section {
     margin-bottom: var(--space-4);
 }
 
-.filter-button {
+/* Pill-Buttons: Filter, Sprachumschalter und Theme-Button */
+.pill-button {
     padding: var(--space-1) var(--space-3);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-pill);
@@ -301,20 +362,37 @@ section + section {
     cursor: pointer;
 }
 
-.filter-button:hover {
+.pill-button:hover {
     border-color: var(--color-accent);
 }
 
-.filter-button[aria-pressed="true"] {
+.pill-button[aria-pressed="true"] {
     border-color: var(--color-accent);
     background-color: var(--color-accent);
     color: var(--color-bg);
     font-weight: 700;
 }
 
-.filter-button[aria-pressed="true"]::before {
+.pill-button[aria-pressed="true"]::before {
     content: "✓ ";
     content: "✓ " / "";
+}
+
+/* Sprachumschalter */
+.language-switcher {
+    display: flex;
+    gap: var(--space-1);
+}
+
+/* Theme-Button mit Mond-Symbol */
+.theme-toggle {
+    display: inline-flex;
+    align-items: center;
+}
+
+.theme-toggle svg {
+    width: 1.1em;
+    height: 1.1em;
 }
 
 /* Nur für Screenreader sichtbar */
@@ -328,10 +406,4 @@ section + section {
     clip-path: inset(50%);
     white-space: nowrap;
     border: 0;
-}
-
-/* Sprachumschalter */
-.language-switcher {
-    display: flex;
-    gap: var(--space-1);
 }
