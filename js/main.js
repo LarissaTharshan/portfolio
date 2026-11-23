@@ -3,7 +3,8 @@ import {timeline} from './data/timeline.js';
 import {translations} from './data/translations.js';
 import {createTranslator, detectLanguage, SUPPORTED_LANGUAGES} from './i18n.js';
 import {applyStaticTranslations, updateLanguageButtons} from './i18n-dom.js';
-import {getStorage, LANGUAGE_KEY, readStored, store} from './storage.js';
+import {getStorage, LANGUAGE_KEY, readStored, store, THEME_KEY} from './storage.js';
+import {applyTheme, resolveTheme, THEMES, toggleTheme, updateThemeButton} from './theme.js';
 import {renderProjects, sortProjectsByYear} from './projects.js';
 import {renderTimeline, sortTimeline} from './timeline.js';
 import {
@@ -17,6 +18,8 @@ import {
 
 /** Lokaler Speicher des Browsers oder null, falls blockiert. */
 const storage = getStorage();
+
+/* ---------- Sprache ---------- */
 
 /**
  * Aktuelle Sprache der Seite.
@@ -37,11 +40,37 @@ let language = detectLanguage(
  */
 let t = createTranslator(translations, language);
 
+/* ---------- Theme ---------- */
+
+/** Abfrage, ob das System ein dunkles Farbschema bevorzugt. */
+const darkQuery = window.matchMedia('(prefers-color-scheme: dark)');
+
+/** Gespeichertes Theme oder null. */
+const storedTheme = readStored(storage, THEME_KEY);
+
+/**
+ * Ob das Theme aktiv gewählt wurde (gespeichert oder per Klick).
+ * Solange nicht, folgt die Seite der Systemeinstellung.
+ *
+ * @type {boolean}
+ */
+let themeChosen = THEMES.includes(storedTheme);
+
+/**
+ * Aktuelles Theme der Seite.
+ *
+ * @type {string}
+ */
+let theme = resolveTheme(storedTheme, darkQuery.matches);
+
+/* ---------- Elemente ---------- */
+
 const projectContainer = document.getElementById('project-list');
 const filterContainer = document.getElementById('project-filter');
 const statusElement = document.getElementById('project-status');
 const timelineContainer = document.getElementById('timeline-list');
 const languageContainer = document.getElementById('language-switcher');
+const themeButton = document.getElementById('theme-toggle');
 
 /**
  * Der aktuell aktive Filter. null bedeutet "Alle".
@@ -95,6 +124,8 @@ function applyLanguage(newLanguage) {
     }
 }
 
+/* ---------- Ereignisse ---------- */
+
 if (projectContainer && filterContainer) {
     filterContainer.addEventListener('click', (event) => {
         const button = event.target.closest('[data-tag]');
@@ -125,5 +156,29 @@ if (languageContainer) {
         store(storage, LANGUAGE_KEY, language);
     });
 }
+
+if (themeButton) {
+    updateThemeButton(themeButton, theme);
+
+    themeButton.addEventListener('click', () => {
+        theme = toggleTheme(theme);
+        themeChosen = true;
+        applyTheme(document.documentElement, theme);
+        updateThemeButton(themeButton, theme);
+        store(storage, THEME_KEY, theme);
+    });
+}
+
+darkQuery.addEventListener('change', (event) => {
+    if (themeChosen) {
+        return;
+    }
+
+    theme = event.matches ? 'dark' : 'light';
+
+    if (themeButton) {
+        updateThemeButton(themeButton, theme);
+    }
+});
 
 applyLanguage(language);
